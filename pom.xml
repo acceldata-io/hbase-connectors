@@ -143,9 +143,9 @@
     <audience-annotations.version>0.5.0</audience-annotations.version>
     <junit.version>4.13.2</junit.version>
     <mockito.version>4.11.0</mockito.version>
-    <hbase-thirdparty.version>4.1.10</hbase-thirdparty.version>
+    <hbase-thirdparty.version>4.1.5</hbase-thirdparty.version>
     <!-- Must match the version in hbase-thirdparty above ! -->
-    <thirdparty.protobuf.version>4.29.2</thirdparty.protobuf.version>
+    <thirdparty.protobuf.version>3.24.3</thirdparty.protobuf.version>
     <hadoop-two.version>2.10.0</hadoop-two.version>
     <hadoop-three.version>3.2.3.3.2.3.5-2</hadoop-three.version>
     <hadoop.version>${hadoop-three.version}</hadoop.version>
@@ -509,7 +509,7 @@
             <configLocation>hbase/checkstyle.xml</configLocation>
             <suppressionsLocation>hbase/checkstyle-suppressions.xml</suppressionsLocation>
             <includeTestSourceDirectory>true</includeTestSourceDirectory>
-            <failOnViolation>false</failOnViolation>
+            <failOnViolation>true</failOnViolation>
           </configuration>
           <dependencies>
             <dependency>
