@@ -192,8 +192,8 @@ public class SparkSQLPushDownFilter extends FilterBase {
     HashMap<ByteArrayComparable, HashMap<ByteArrayComparable, String>> currentCellToColumnIndexMap =
       new HashMap<>();
 
-    for (SparkFilterProtos.SQLPredicatePushDownCellToColumnMapping sqlPredicatePushDownCellToColumnMapping : proto
-      .getCellToColumnMappingList()) {
+    for (SparkFilterProtos.SQLPredicatePushDownCellToColumnMapping
+            sqlPredicatePushDownCellToColumnMapping : proto.getCellToColumnMappingList()) {
 
       byte[] familyArray = sqlPredicatePushDownCellToColumnMapping.getColumnFamily().toByteArray();
       ByteArrayComparable familyByteComparable =
