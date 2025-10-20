@@ -54,7 +54,7 @@ under the License.
     <project>
       <groupId>org.codehaus.jettison</groupId>
       <artifactId>jettison</artifactId>
-      <version>1.1</version>
+      <version>1.5.4</version>
       <licenses>
         <license>
           <name>Apache License, Version 2.0</name>
