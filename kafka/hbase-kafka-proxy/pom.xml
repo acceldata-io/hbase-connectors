@@ -106,6 +106,30 @@
         <exclusion>
           <groupId>org.apache.commons</groupId>
           <artifactId>commons-compress</artifactId>
+         </exclusion>
+          <exclusion>
+              <groupId>com.google.code.gson</groupId>
+              <artifactId>gson</artifactId>
+          </exclusion>
+          <exclusion>
+              <groupId>com.google.guava</groupId>
+              <artifactId>guava</artifactId>
+          </exclusion>
+          <exclusion>
+              <groupId>net.minidev</groupId>
+              <artifactId>json-smart</artifactId>
+          </exclusion>
+          <exclusion>
+              <groupId>org.codehaus.jackson</groupId>
+              <artifactId>jackson-mapper-asl</artifactId>
+          </exclusion>
+          <exclusion>
+              <groupId>com.nimbusds</groupId>
+              <artifactId>nimbus-jose-jwt</artifactId>
+          </exclusion>
+        <exclusion>
+           <groupId>org.codehaus.jettison</groupId>
+           <artifactId>jettison</artifactId>
         </exclusion>
       </exclusions>
     </dependency>
