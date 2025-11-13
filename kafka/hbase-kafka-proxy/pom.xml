@@ -33,7 +33,7 @@
   <properties>
     <collections.version>4.1</collections.version>
     <commons-lang3.version>3.6</commons-lang3.version>
-    <kafka-clients.version>3.7.2.3.2.3.4-3001</kafka-clients.version>
+    <kafka-clients.version>3.7.2.3.2.3.4-3002</kafka-clients.version>
     <curator.version>5.2.0</curator.version>
   </properties>
   <dependencies>
