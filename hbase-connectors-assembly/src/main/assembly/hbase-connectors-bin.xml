@@ -34,6 +34,7 @@
       <useAllReactorProjects>true</useAllReactorProjects>
       <excludes>
         <exclude>org.apache.hbase.connectors.spark:hbase-spark-it</exclude>
+        <exclude>org.apache.hbase.connectors.spark:hbase-spark-protocol</exclude>
       </excludes>
       <binaries>
         <unpack>false</unpack>
