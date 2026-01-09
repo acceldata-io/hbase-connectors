@@ -146,6 +146,7 @@
     <hbase-thirdparty.version>4.1.11</hbase-thirdparty.version>
     <!-- Must match the version in hbase-thirdparty above ! -->
     <thirdparty.protobuf.version>4.30.2</thirdparty.protobuf.version>
+    <protobuf.version>4.30.2</protobuf.version>
     <hadoop-two.version>2.10.0</hadoop-two.version>
     <hadoop-three.version>3.3.6.3.3.6.3-1</hadoop-three.version>
     <hadoop.version>${hadoop-three.version}</hadoop.version>
@@ -408,6 +409,22 @@
         <version>${hbase.version}</version>
         <scope>test</scope>
       </dependency>
+      <dependency>
+        <groupId>com.google.protobuf</groupId>
+        <artifactId>protobuf-java</artifactId>
+        <version>${protobuf.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.hadoop</groupId>
+        <artifactId>hadoop-common</artifactId>
+        <version>${hadoop.version}</version>
+        <exclusions>
+          <exclusion>
+            <groupId>com.google.protobuf</groupId>
+            <artifactId>protobuf-java</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
     </dependencies>
   </dependencyManagement>
   <build>
@@ -561,17 +578,17 @@
                 <requireMavenVersion>
                   <version>[${maven.min.version},)</version>
                   <message>Maven is out of date.
-  HBase requires at least version ${maven.min.version} of Maven to properly build from source.
-  You appear to be using an older version. You can use either "mvn -version" or
-  "mvn enforcer:display-info" to verify what version is active.
-  See the reference guide on building for more information: http://hbase.apache.org/book.html#build</message>
+                    HBase requires at least version ${maven.min.version} of Maven to properly build from source.
+                    You appear to be using an older version. You can use either "mvn -version" or
+                    "mvn enforcer:display-info" to verify what version is active.
+                    See the reference guide on building for more information: http://hbase.apache.org/book.html#build</message>
                 </requireMavenVersion>
                 <!-- The earliest JVM version we verify builds for via ASF Jenkins -->
                 <requireJavaVersion>
                   <version>[${java.min.version},)</version>
                   <message>Java is out of date.
-  HBase requires at least version ${java.min.version} of the JDK to properly build from source.
-  See the reference guide on building for more information: http://hbase.apache.org/book.html#build</message>
+                    HBase requires at least version ${java.min.version} of the JDK to properly build from source.
+                    See the reference guide on building for more information: http://hbase.apache.org/book.html#build</message>
                 </requireJavaVersion>
                 <bannedDependencies>
                   <excludes>
@@ -885,11 +902,11 @@
                 <enforceBytecodeVersion>
                   <maxJdkVersion>${compileSource}</maxJdkVersion>
                   <message>HBase has unsupported dependencies.
-  HBase requires that all dependencies be compiled with version ${compileSource} or earlier
-  of the JDK to properly build from source.  You appear to be using a newer dependency. You can use
-  either "mvn -version" or "mvn enforcer:display-info" to verify what version is active.
-  Non-release builds can temporarily build with a newer JDK version by setting the
-  'compileSource' property (eg. mvn -DcompileSource=1.8 clean package).</message>
+                    HBase requires that all dependencies be compiled with version ${compileSource} or earlier
+                    of the JDK to properly build from source.  You appear to be using a newer dependency. You can use
+                    either "mvn -version" or "mvn enforcer:display-info" to verify what version is active.
+                    Non-release builds can temporarily build with a newer JDK version by setting the
+                    'compileSource' property (eg. mvn -DcompileSource=1.8 clean package).</message>
                 </enforceBytecodeVersion>
               </rules>
             </configuration>
