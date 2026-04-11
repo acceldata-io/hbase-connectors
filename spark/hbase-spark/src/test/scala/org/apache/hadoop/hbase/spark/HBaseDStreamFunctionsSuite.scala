@@ -24,11 +24,13 @@ import org.apache.hadoop.hbase.util.Bytes
 import org.apache.spark.SparkContext
 import org.apache.spark.rdd.RDD
 import org.apache.spark.streaming.{Milliseconds, StreamingContext}
-import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach, FunSuite}
+import org.scalatest.BeforeAndAfterAll
+import org.scalatest.BeforeAndAfterEach
+import org.scalatest.funsuite.AnyFunSuite
 import scala.collection.mutable
 
 class HBaseDStreamFunctionsSuite
-    extends FunSuite
+    extends AnyFunSuite
     with BeforeAndAfterEach
     with BeforeAndAfterAll
     with Logging {
@@ -66,7 +68,7 @@ class HBaseDStreamFunctionsSuite
   test("bulkput to test HBase client") {
     val config = TEST_UTIL.getConfiguration
     val rdd1 = sc.parallelize(
-      Array(
+      Seq(
         (
           Bytes.toBytes("1"),
           Array((Bytes.toBytes(columnFamily), Bytes.toBytes("a"), Bytes.toBytes("foo1")))),
@@ -78,7 +80,7 @@ class HBaseDStreamFunctionsSuite
           Array((Bytes.toBytes(columnFamily), Bytes.toBytes("c"), Bytes.toBytes("foo3"))))))
 
     val rdd2 = sc.parallelize(
-      Array(
+      Seq(
         (
           Bytes.toBytes("4"),
           Array((Bytes.toBytes(columnFamily), Bytes.toBytes("d"), Bytes.toBytes("foo")))),

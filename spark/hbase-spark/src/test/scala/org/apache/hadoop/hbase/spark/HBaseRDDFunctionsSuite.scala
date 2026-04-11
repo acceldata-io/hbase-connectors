@@ -22,11 +22,13 @@ import org.apache.hadoop.hbase.client._
 import org.apache.hadoop.hbase.spark.HBaseRDDFunctions._
 import org.apache.hadoop.hbase.util.Bytes
 import org.apache.spark.SparkContext
-import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach, FunSuite}
+import org.scalatest.BeforeAndAfterAll
+import org.scalatest.BeforeAndAfterEach
+import org.scalatest.funsuite.AnyFunSuite
 import scala.collection.mutable
 
 class HBaseRDDFunctionsSuite
-    extends FunSuite
+    extends AnyFunSuite
     with BeforeAndAfterEach
     with BeforeAndAfterAll
     with Logging {
@@ -65,7 +67,7 @@ class HBaseRDDFunctionsSuite
   test("bulkput to test HBase client") {
     val config = TEST_UTIL.getConfiguration
     val rdd = sc.parallelize(
-      Array(
+      Seq(
         (
           Bytes.toBytes("1"),
           Array((Bytes.toBytes(columnFamily), Bytes.toBytes("a"), Bytes.toBytes("foo1")))),
@@ -153,7 +155,7 @@ class HBaseRDDFunctionsSuite
       put.addColumn(Bytes.toBytes(columnFamily), Bytes.toBytes("a"), Bytes.toBytes("foo3"))
       table.put(put)
 
-      val rdd = sc.parallelize(Array(Bytes.toBytes("delete1"), Bytes.toBytes("delete3")))
+      val rdd = sc.parallelize(Seq(Bytes.toBytes("delete1"), Bytes.toBytes("delete3")))
 
       val hbaseContext = new HBaseContext(sc, config)
 
@@ -206,7 +208,7 @@ class HBaseRDDFunctionsSuite
     }
 
     val rdd = sc.parallelize(
-      Array(
+      Seq(
         Bytes.toBytes("get1"),
         Bytes.toBytes("get2"),
         Bytes.toBytes("get3"),
@@ -272,7 +274,7 @@ class HBaseRDDFunctionsSuite
     }
 
     val rdd = sc.parallelize(
-      Array(
+      Seq(
         Bytes.toBytes("get1"),
         Bytes.toBytes("get2"),
         Bytes.toBytes("get3"),
@@ -321,7 +323,7 @@ class HBaseRDDFunctionsSuite
   test("foreachPartition with puts to test HBase client") {
     val config = TEST_UTIL.getConfiguration
     val rdd = sc.parallelize(
-      Array(
+      Seq(
         (
           Bytes.toBytes("1foreach"),
           Array((Bytes.toBytes(columnFamily), Bytes.toBytes("a"), Bytes.toBytes("foo1")))),
@@ -419,7 +421,7 @@ class HBaseRDDFunctionsSuite
     }
 
     val rdd = sc.parallelize(
-      Array(
+      Seq(
         Bytes.toBytes("get1"),
         Bytes.toBytes("get2"),
         Bytes.toBytes("get3"),
@@ -431,7 +433,7 @@ class HBaseRDDFunctionsSuite
       hbaseContext,
       (it, conn) => {
         val table = conn.getTable(TableName.valueOf("t1"))
-        var res = mutable.MutableList[String]()
+        var res = mutable.ListBuffer[String]()
 
         it.foreach(
           r => {

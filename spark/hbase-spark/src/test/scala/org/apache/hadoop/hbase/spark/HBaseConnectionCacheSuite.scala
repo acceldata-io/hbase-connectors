@@ -21,7 +21,7 @@ import java.util.concurrent.ExecutorService
 import org.apache.hadoop.conf.Configuration
 import org.apache.hadoop.hbase.TableName
 import org.apache.hadoop.hbase.client.{Admin, BufferedMutator, BufferedMutatorParams, Connection, RegionLocator, Table, TableBuilder}
-import org.scalatest.FunSuite
+import org.scalatest.funsuite.AnyFunSuite
 import scala.util.Random
 
 case class HBaseConnectionKeyMocker(confId: Int) extends HBaseConnectionKey(null) {
@@ -63,7 +63,7 @@ class ConnectionMocker extends Connection {
   def clearRegionLocationCache(): Unit = {}
 }
 
-class HBaseConnectionCacheSuite extends FunSuite with Logging {
+class HBaseConnectionCacheSuite extends AnyFunSuite with Logging {
   /*
    * These tests must be performed sequentially as they operate with an
    * unique running thread and resource.

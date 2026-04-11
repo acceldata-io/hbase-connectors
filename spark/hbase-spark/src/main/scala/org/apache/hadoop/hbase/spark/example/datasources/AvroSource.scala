@@ -21,10 +21,7 @@ import org.apache.avro.Schema
 import org.apache.avro.generic.GenericData
 import org.apache.hadoop.hbase.spark.AvroSerdes
 import org.apache.hadoop.hbase.spark.datasources.HBaseTableCatalog
-import org.apache.spark.SparkConf
-import org.apache.spark.SparkContext
-import org.apache.spark.sql.DataFrame
-import org.apache.spark.sql.SQLContext
+import org.apache.spark.sql.{DataFrame, SparkSession}
 import org.apache.yetus.audience.InterfaceAudience
 
 /**
@@ -99,15 +96,13 @@ object AvroSource {
                               |}
                               |}""".stripMargin
 
-  def main(args: Array[String]) {
-    val sparkConf = new SparkConf().setAppName("AvroSourceExample")
-    val sc = new SparkContext(sparkConf)
-    val sqlContext = new SQLContext(sc)
+  def main(args: Array[String]): Unit = {
+    val spark = SparkSession.builder().appName("AvroSourceExample").getOrCreate()
 
-    import sqlContext.implicits._
+    import spark.implicits._
 
     def withCatalog(cat: String): DataFrame = {
-      sqlContext.read
+      spark.read
         .options(
           Map(
             "avroSchema" -> AvroHBaseRecord.schemaString,
@@ -118,8 +113,9 @@ object AvroSource {
 
     val data = (0 to 255).map { i => AvroHBaseRecord(i) }
 
-    sc.parallelize(data)
-      .toDF
+    spark.sparkContext
+      .parallelize(data)
+      .toDF()
       .write
       .options(Map(HBaseTableCatalog.tableCatalog -> catalog, HBaseTableCatalog.newTable -> "5"))
       .format("org.apache.hadoop.hbase.spark")
@@ -128,8 +124,8 @@ object AvroSource {
     val df = withCatalog(catalog)
     df.show()
     df.printSchema()
-    df.registerTempTable("ExampleAvrotable")
-    val c = sqlContext.sql("select count(1) from ExampleAvrotable")
+    df.createOrReplaceTempView("ExampleAvrotable")
+    val c = spark.sql("select count(1) from ExampleAvrotable")
     c.show()
 
     val filtered = df.select($"col0", $"col1.favorite_array").where($"col0" === "name001")
@@ -164,5 +160,7 @@ object AvroSource {
     df.filter($"col1.name" <= "name005" || $"col1.name".contains("name007"))
       .select("col0", "col1.favorite_color", "col1.favorite_number")
       .show()
+
+    spark.stop()
   }
 }

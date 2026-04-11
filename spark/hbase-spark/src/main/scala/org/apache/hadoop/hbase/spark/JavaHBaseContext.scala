@@ -28,7 +28,7 @@ import org.apache.spark.api.java.{JavaRDD, JavaSparkContext}
 import org.apache.spark.api.java.function.{FlatMapFunction, Function, VoidFunction}
 import org.apache.spark.streaming.api.java.JavaDStream
 import org.apache.yetus.audience.InterfaceAudience
-import scala.collection.JavaConversions._
+import scala.collection.JavaConverters._
 import scala.reflect.ClassTag
 
 /**
@@ -64,7 +64,7 @@ class JavaHBaseContext(@transient val jsc: JavaSparkContext, @transient val conf
     hbaseContext.foreachPartition(
       javaRdd.rdd,
       (it: Iterator[T], conn: Connection) => {
-        f.call((it, conn))
+        f.call((it.asJava, conn))
       })
   }
 
@@ -113,7 +113,8 @@ class JavaHBaseContext(@transient val jsc: JavaSparkContext, @transient val conf
     JavaRDD.fromRDD(
       hbaseContext.mapPartitions(
         javaRdd.rdd,
-        (it: Iterator[T], conn: Connection) => f.call(it, conn))(fakeClassTag[R]))(fakeClassTag[R])
+        (it: Iterator[T], conn: Connection) => f.call((it.asJava, conn)).asScala)(fakeClassTag[R]))(
+      fakeClassTag[R])
   }
 
   /**

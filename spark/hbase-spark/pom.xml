@@ -42,10 +42,11 @@
       <artifactId>hbase-shaded-miscellaneous</artifactId>
     </dependency>
     <!-- Force import of Spark's servlet API for unit tests -->
+    <!-- Uses javax.servlet for Spark 3.x, jakarta.servlet for Spark 4.x -->
     <dependency>
-      <groupId>javax.servlet</groupId>
-      <artifactId>javax.servlet-api</artifactId>
-      <version>3.1.0</version>
+      <groupId>${servlet.api.groupId}</groupId>
+      <artifactId>${servlet.api.artifactId}</artifactId>
+      <version>${servlet.api.version}</version>
       <scope>test</scope>
     </dependency>
     <!-- Mark Spark / Scala as provided -->
@@ -143,7 +144,7 @@
     <dependency>
       <groupId>org.scalatest</groupId>
       <artifactId>scalatest_${scala.binary.version}</artifactId>
-      <version>3.0.5</version>
+      <version>${scalatest.version}</version>
       <scope>test</scope>
       <exclusions>
         <exclusion>
@@ -183,6 +184,12 @@
       <groupId>org.scala-lang</groupId>
       <artifactId>scala-reflect</artifactId>
       <version>${scala.version}</version>
+    </dependency>
+    <!-- Parallel collections for Scala 2.13+ (built-in for 2.12) -->
+    <dependency>
+      <groupId>org.scala-lang.modules</groupId>
+      <artifactId>scala-parallel-collections_${scala.binary.version}</artifactId>
+      <version>${scala.parallel.version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.spark</groupId>
@@ -339,7 +346,7 @@
           <plugin>
             <groupId>net.alchim31.maven</groupId>
             <artifactId>scala-maven-plugin</artifactId>
-            <version>4.3.0</version>
+            <version>4.9.2</version>
             <configuration>
               <charset>${project.build.sourceEncoding}</charset>
               <scalaVersion>${scala.version}</scalaVersion>

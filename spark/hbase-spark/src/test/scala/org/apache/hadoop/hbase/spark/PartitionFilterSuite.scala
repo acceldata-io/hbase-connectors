@@ -20,8 +20,10 @@ package org.apache.hadoop.hbase.spark
 import org.apache.hadoop.hbase.{HBaseTestingUtility, TableName}
 import org.apache.hadoop.hbase.spark.datasources.{HBaseSparkConf, HBaseTableCatalog}
 import org.apache.spark.{SparkConf, SparkContext}
-import org.apache.spark.sql.{DataFrame, SQLContext}
-import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach, FunSuite}
+import org.apache.spark.sql.{DataFrame, SQLContext, SparkSession}
+import org.scalatest.BeforeAndAfterAll
+import org.scalatest.BeforeAndAfterEach
+import org.scalatest.funsuite.AnyFunSuite
 
 case class FilterRangeRecord(
     intCol0: Int,
@@ -50,7 +52,7 @@ object FilterRangeRecord {
 }
 
 class PartitionFilterSuite
-    extends FunSuite
+    extends AnyFunSuite
     with BeforeAndAfterEach
     with BeforeAndAfterAll
     with Logging {
@@ -75,9 +77,14 @@ class PartitionFilterSuite
     sparkConf.set(HBaseSparkConf.QUERY_BATCHSIZE, "100")
     sparkConf.set(HBaseSparkConf.QUERY_CACHEDROWS, "100")
 
-    sc = new SparkContext("local", "test", sparkConf)
+    val spark = SparkSession.builder()
+      .master("local")
+      .appName("test")
+      .config(sparkConf)
+      .getOrCreate()
+    sc = spark.sparkContext
+    sqlContext = spark.sqlContext
     new HBaseContext(sc, TEST_UTIL.getConfiguration)
-    sqlContext = new SQLContext(sc)
   }
 
   override def afterAll() {
@@ -95,7 +102,7 @@ class PartitionFilterSuite
   // data frame logic. It is used to verify the result set retrieved from data frame logic.
   val rawResult = (0 until 32).map { i => FilterRangeRecord(i) }
 
-  def collectToSet[T](df: DataFrame): Set[T] = {
+  def collectToSet[T: scala.reflect.ClassTag](df: DataFrame): Set[T] = {
     df.collect().map(_.getAs[T](0)).toSet
   }
   val catalog = s"""{
