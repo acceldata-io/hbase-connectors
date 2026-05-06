@@ -62,10 +62,12 @@
     <!-- scala-parallel-collections version -->
     <scala.parallel.version>0.2.0</scala.parallel.version>
     <!--
-      Spark 4.x artifacts use Java features such as records (java.lang.Record, JDK 16+).
-      If you only override spark.version without -Pspark-4, compileSource / scalac target stay
-      at 1.8 and Maven may run on an older JDK; the Scala compile then fails with
-      "Class java.lang.Record not found". Use -Pspark-4 and run Maven with JAVA_HOME=JDK 17+.
+      Spark 4.x artifacts use Java records (java.lang.Record). The scala-maven-plugin runs Zinc
+      in-process when jvmArgs is empty, so scalac uses the SAME JDK as the Maven process.
+      You must run Maven with JAVA_HOME pointing at JDK 17+ (setting source/target to 17 is not enough).
+
+      Activate Spark 4 dependency versions with -Pspark-4 OR -Dspark.connector.profile=4.
+      Without that, only overriding spark.version leaves compileSource/java.min.version at 1.8.
     -->
   </properties>
 
@@ -467,6 +469,33 @@
         <!-- scala-xml 2.x for Scala 2.13 -->
         <scala.xml.version>2.3.0</scala.xml.version>
         <!-- scala-parallel-collections for Scala 2.13 -->
+        <scala.parallel.version>1.0.4</scala.parallel.version>
+      </properties>
+    </profile>
+
+    <!-- Same dependency/toolchain properties as spark-4; for CI/RPM that pass -Dspark.connector.profile=4 -->
+    <profile>
+      <id>spark-connector-4</id>
+      <activation>
+        <property>
+          <name>spark.connector.profile</name>
+          <value>4</value>
+        </property>
+      </activation>
+      <properties>
+        <spark.version>4.1.1.3.3.6.4-1</spark.version>
+        <scala.version>2.13.17</scala.version>
+        <scala.binary.version>2.13</scala.binary.version>
+        <jackson.version>2.20.0</jackson.version>
+        <target.jvm>-target:17</target.jvm>
+        <compileSource>17</compileSource>
+        <java.min.version>17</java.min.version>
+        <releaseTarget>17</releaseTarget>
+        <scalatest.version>3.2.19</scalatest.version>
+        <servlet.api.groupId>jakarta.servlet</servlet.api.groupId>
+        <servlet.api.artifactId>jakarta.servlet-api</servlet.api.artifactId>
+        <servlet.api.version>5.0.0</servlet.api.version>
+        <scala.xml.version>2.3.0</scala.xml.version>
         <scala.parallel.version>1.0.4</scala.parallel.version>
       </properties>
     </profile>
