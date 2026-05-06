@@ -125,7 +125,7 @@
     <maven.build.timestamp.format>yyyy-MM-dd'T'HH:mm</maven.build.timestamp.format>
     <buildDate>${maven.build.timestamp}</buildDate>
     <compileSource>1.8</compileSource>
-    <releaseTarget>8</releaseTarget>
+    <releaseTarget>17</releaseTarget>
     <java.min.version>${compileSource}</java.min.version>
     <!-- override on command line to have generated LICENSE files include
          diagnostic info for verifying notice requirements -->
