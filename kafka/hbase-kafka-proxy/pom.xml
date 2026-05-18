@@ -33,11 +33,8 @@
   <properties>
     <collections.version>4.1</collections.version>
     <commons-lang3.version>3.6</commons-lang3.version>
-<<<<<<< rel/ODP-3.3.6.3-SNAPSHOT
-    <kafka-clients.version>3.7.2.3.3.6.3-SNAPSHOT</kafka-clients.version>
-=======
-    <kafka-clients.version>3.7.2.3.3.6.3-SNAPSHOT</kafka-clients.version>
->>>>>>> ODP-main
+    <kafka-clients.version>3.7.2.3.3.6.4-1</kafka-clients.version>
+    <kafka-clients.version>3.7.2.3.3.6.4-1</kafka-clients.version>
     <curator.version>5.2.0</curator.version>
   </properties>
   <dependencies>
