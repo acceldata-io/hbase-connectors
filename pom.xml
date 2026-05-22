@@ -120,7 +120,7 @@
   </issueManagement>
   <properties>
     <!-- See https://maven.apache.org/maven-ci-friendly.html -->
-    <revision>1.1.0.3.3.6.4-1</revision>
+    <revision>1.1.0.3.3.6.5-SNAPSHOT</revision>
     <maven.javadoc.skip>true</maven.javadoc.skip>
     <maven.build.timestamp.format>yyyy-MM-dd'T'HH:mm</maven.build.timestamp.format>
     <buildDate>${maven.build.timestamp}</buildDate>
@@ -137,8 +137,8 @@
     <buildnumber.maven.version>1.4</buildnumber.maven.version>
 
     <maven.min.version>3.5.0</maven.min.version>
-    <hbase-hadoop2.version>2.6.2.3.3.6.4-1</hbase-hadoop2.version>
-    <hbase.version>2.6.2.3.3.6.4-1</hbase.version>
+    <hbase-hadoop2.version>2.6.2.3.3.6.5-SNAPSHOT</hbase-hadoop2.version>
+    <hbase.version>2.6.2.3.3.6.5-SNAPSHOT</hbase.version>
     <exec.maven.version>1.6.0</exec.maven.version>
     <audience-annotations.version>0.5.0</audience-annotations.version>
     <junit.version>4.13.2</junit.version>
@@ -148,9 +148,9 @@
     <thirdparty.protobuf.version>4.30.2</thirdparty.protobuf.version>
     <protobuf.version>4.30.2</protobuf.version>
     <hadoop-two.version>2.10.0</hadoop-two.version>
-    <hadoop-three.version>3.3.6.3.3.6.4-1</hadoop-three.version>
+    <hadoop-three.version>3.3.6.3.3.6.5-SNAPSHOT</hadoop-three.version>
     <hadoop.version>${hadoop-three.version}</hadoop.version>
-    <zookeeper.version>3.8.4.3.3.6.4-1</zookeeper.version>
+    <zookeeper.version>3.8.4.3.3.6.5-SNAPSHOT</zookeeper.version>
     <slf4j.version>1.7.36</slf4j.version>
     <log4j2.version>2.17.2</log4j2.version>
     <reload4j.version>1.2.25</reload4j.version>
