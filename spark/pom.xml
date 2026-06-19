@@ -46,7 +46,7 @@
     <protobuf.plugin.version>0.6.1</protobuf.plugin.version>
     <!-- Default Spark 3.x configuration -->
     <jackson.version>2.12.5</jackson.version>
-    <spark.version>3.5.5.3.3.6.5-SNAPSHOT</spark.version>
+    <spark.version>4.1.2.3.4.3.0-1</spark.version>
     <!-- The following version is in sync with Spark's choice
          Please take caution when this version is modified -->
     <scala.version>2.13.17</scala.version>
@@ -456,7 +456,7 @@
     <profile>
       <id>spark-4</id>
       <properties>
-        <spark.version>4.1.1.3.3.6.5-SNAPSHOT</spark.version>
+        <spark.version>4.1.2.3.4.3.0-1</spark.version>
         <scala.version>2.13.17</scala.version>
         <scala.binary.version>2.13</scala.binary.version>
         <jackson.version>2.20.0</jackson.version>
@@ -489,7 +489,7 @@
         </property>
       </activation>
       <properties>
-        <spark.version>4.1.1.3.3.6.5-SNAPSHOT</spark.version>
+        <spark.version>4.1.2.3.4.3.0-1</spark.version>
         <scala.version>2.13.17</scala.version>
         <scala.binary.version>2.13</scala.binary.version>
         <jackson.version>2.20.0</jackson.version>
