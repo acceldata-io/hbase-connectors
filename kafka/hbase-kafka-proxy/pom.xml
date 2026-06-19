@@ -31,9 +31,12 @@
   <name>Apache HBase - Kafka Proxy</name>
   <description>Proxy that forwards HBase replication events to a Kafka broker</description>
   <properties>
+    <odp.release.version>3.3.6.5-SNAPSHOT</odp.release.version>
     <collections.version>4.1</collections.version>
-    <kafka-clients.version>2.0.0</kafka-clients.version>
-    <curator.version>4.2.0</curator.version>
+    <commons-lang3.version>3.6</commons-lang3.version>
+    <kafka-clients.version>3.7.2.${odp.release.version}</kafka-clients.version>
+    <kafka-clients.version>3.7.2.${odp.release.version}</kafka-clients.version>
+    <curator.version>5.2.0</curator.version>
   </properties>
   <dependencies>
     <dependency>
@@ -156,6 +159,7 @@
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
+      <version>${commons-lang3.version}</version>
     </dependency>
   </dependencies>
   <build>

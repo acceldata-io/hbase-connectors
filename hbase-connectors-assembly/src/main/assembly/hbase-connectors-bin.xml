@@ -40,6 +40,7 @@
         <!-- Keep the Scala binary suffix in sync with scala.binary.version in spark4/pom.xml;
               hbase-spark-pushdown artifactId is version-suffixed. -->
         <exclude>org.apache.hbase.connectors.spark:hbase-spark-pushdown_${scala.binary.version}</exclude>
+        <exclude>org.apache.hbase.connectors.spark:hbase-spark-protocol</exclude>
       </excludes>
       <binaries>
         <unpack>false</unpack>
