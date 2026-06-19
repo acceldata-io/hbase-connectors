@@ -47,7 +47,7 @@
     <java.min.version>17</java.min.version>
 
     <!-- Apache Spark 4.x is Scala 2.13 only -->
-    <spark4.version>4.0.0</spark4.version>
+    <spark4.version>4.1.2</spark4.version>
     <!-- Keep aligned with the Scala version expected by Spark 4.0.0 -->
     <scala.version>2.13.14</scala.version>
     <scala.binary.version>2.13</scala.binary.version>
