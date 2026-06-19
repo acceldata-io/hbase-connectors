@@ -20,11 +20,41 @@ limitations under the License.
 
 ## Spark, Scala and Configurable Options
 
+### Building for Spark 3.x (Default)
+
+The default build is configured for Spark 3.x with Scala 2.12. To build:
+
+```
+$ mvn clean install
+```
+
 To generate an artifact for a different [Spark version](https://mvnrepository.com/artifact/org.apache.spark/spark-core) and/or [Scala version](https://www.scala-lang.org/download/all.html),
 [Hadoop version](https://mvnrepository.com/artifact/org.apache.hadoop/hadoop-core), or [HBase version](https://mvnrepository.com/artifact/org.apache.hbase/hbase), pass command-line options as follows (changing version numbers appropriately):
 
 ```
-$ mvn -Dspark.version=3.1.2 -Dscala.version=2.12.10 -Dhadoop-three.version=3.2.0 -Dscala.binary.version=2.12 -Dhbase.version=2.4.8 clean install
+$ mvn -Dspark.version=3.5.5 -Dscala.version=2.12.18 -Dhadoop-three.version=3.3.6 -Dscala.binary.version=2.12 -Dhbase.version=2.6.2 clean install
+```
+
+### Building for Spark 4.x
+
+To build for Spark 4.x, use the `spark-4` profile. This profile automatically configures:
+- Scala 2.13.17
+- Jackson 2.20.0
+- Jakarta Servlet API (instead of javax.servlet)
+- JDK 17 target
+
+```
+$ mvn -Pspark-4 clean install
+```
+
+**Requirements for Spark 4.x:**
+- JDK 17 or later is required
+- Spark 4.x uses Jakarta Servlet API instead of javax.servlet
+
+You can also override specific versions with the spark-4 profile:
+
+```
+$ mvn -Pspark-4 -Dspark.version=4.1.1.3.3.6.5-SNAPSHOT -Dhadoop-three.version=3.3.6.3.3.6.5-SNAPSHOT -Dhbase.version=2.6.2.3.3.6.5-SNAPSHOT clean install
 ```
 
 ## Configuration and Installation
@@ -36,4 +66,6 @@ $ mvn -Dspark.version=3.1.2 -Dscala.version=2.12.10 -Dhadoop-three.version=3.2.0
   - scala-library, hbase-spark, and hbase-spark-protocol-shaded.
 - The server-side configuration is needed for column filter pushdown
   - if you cannot perform the server-side configuration, consider using `.option("hbase.spark.pushdown.columnfilter", false)`
-- The Scala library version must match the Scala version (2.11 or 2.12) used for compiling the connector.
+- The Scala library version must match the Scala version used for compiling the connector:
+  - Spark 3.x: Scala 2.12
+  - Spark 4.x: Scala 2.13

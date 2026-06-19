@@ -45,7 +45,7 @@ object HBaseBulkDeleteExample {
     try {
       // [Array[Byte]]
       val rdd = sc.parallelize(
-        Array(
+        Seq(
           Bytes.toBytes("1"),
           Bytes.toBytes("2"),
           Bytes.toBytes("3"),

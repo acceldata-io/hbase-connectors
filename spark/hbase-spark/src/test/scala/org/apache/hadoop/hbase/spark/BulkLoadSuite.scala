@@ -29,9 +29,11 @@ import org.apache.hadoop.hbase.tool.LoadIncrementalHFiles
 import org.apache.hadoop.hbase.util.Bytes
 import org.apache.spark.SparkContext
 import org.junit.rules.TemporaryFolder
-import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach, FunSuite}
+import org.scalatest.BeforeAndAfterAll
+import org.scalatest.BeforeAndAfterEach
+import org.scalatest.funsuite.AnyFunSuite
 
-class BulkLoadSuite extends FunSuite with BeforeAndAfterEach with BeforeAndAfterAll with Logging {
+class BulkLoadSuite extends AnyFunSuite with BeforeAndAfterEach with BeforeAndAfterAll with Logging {
   @transient var sc: SparkContext = null
   var TEST_UTIL = new HBaseTestingUtility
 
@@ -80,7 +82,7 @@ class BulkLoadSuite extends FunSuite with BeforeAndAfterEach with BeforeAndAfter
     // due the limitations of the HBase Minicluster
 
     val rdd = sc.parallelize(
-      Array(
+      Seq(
         (
           Bytes.toBytes("1"),
           (Bytes.toBytes(columnFamily1), Bytes.toBytes("a"), Bytes.toBytes("foo1"))),
@@ -143,7 +145,7 @@ class BulkLoadSuite extends FunSuite with BeforeAndAfterEach with BeforeAndAfter
     // 4. There are tests for records in one column family and some in two column families
     // 5. There are records will a single qualifier and some with two
     val rdd = sc.parallelize(
-      Array(
+      Seq(
         (
           Bytes.toBytes("1"),
           (Bytes.toBytes(columnFamily1), Bytes.toBytes("a"), Bytes.toBytes("foo1"))),
@@ -281,7 +283,7 @@ class BulkLoadSuite extends FunSuite with BeforeAndAfterEach with BeforeAndAfter
     // 4. There are tests for records in one column family and some in two column families
     // 5. There are records will a single qualifier and some with two
     val rdd = sc.parallelize(
-      Array(
+      Seq(
         (
           Bytes.toBytes("1"),
           (Bytes.toBytes(columnFamily1), Bytes.toBytes("a"), Bytes.toBytes("foo1"))),
@@ -428,7 +430,7 @@ class BulkLoadSuite extends FunSuite with BeforeAndAfterEach with BeforeAndAfter
     // 4. There are tests for records in one column family and some in two column families
     // 5. There are records will a single qualifier and some with two
     val rdd = sc.parallelize(
-      Array(
+      Seq(
         (
           Bytes.toBytes("1"),
           (Bytes.toBytes(columnFamily1), Bytes.toBytes("a"), Bytes.toBytes("foo1"))),
@@ -654,7 +656,7 @@ class BulkLoadSuite extends FunSuite with BeforeAndAfterEach with BeforeAndAfter
     // 5. There are records will a single qualifier and some with two
     val rdd = sc
       .parallelize(
-        Array(
+        Seq(
           ("1", (Bytes.toBytes(columnFamily1), Bytes.toBytes("a"), Bytes.toBytes("foo1"))),
           ("3", (Bytes.toBytes(columnFamily2), Bytes.toBytes("b"), Bytes.toBytes("foo2.a"))),
           ("3", (Bytes.toBytes(columnFamily2), Bytes.toBytes("a"), Bytes.toBytes("foo2.b"))),
@@ -780,7 +782,7 @@ class BulkLoadSuite extends FunSuite with BeforeAndAfterEach with BeforeAndAfter
     // 5. There are records will a single qualifier and some with two
     val rdd = sc
       .parallelize(
-        Array(
+        Seq(
           ("1", (Bytes.toBytes(columnFamily1), Bytes.toBytes("a"), Bytes.toBytes("foo1"))),
           ("3", (Bytes.toBytes(columnFamily1), Bytes.toBytes("b"), Bytes.toBytes("foo2.b"))),
           ("3", (Bytes.toBytes(columnFamily1), Bytes.toBytes("a"), Bytes.toBytes("foo2.a"))),
@@ -915,7 +917,7 @@ class BulkLoadSuite extends FunSuite with BeforeAndAfterEach with BeforeAndAfter
     // 5. There are records will a single qualifier and some with two
     val rdd = sc
       .parallelize(
-        Array(
+        Seq(
           ("1", (Bytes.toBytes(columnFamily1), Bytes.toBytes("a"), Bytes.toBytes("foo1"))),
           ("3", (Bytes.toBytes(columnFamily2), Bytes.toBytes("b"), Bytes.toBytes("foo2.a"))),
           ("3", (Bytes.toBytes(columnFamily2), Bytes.toBytes("a"), Bytes.toBytes("foo2.b"))),

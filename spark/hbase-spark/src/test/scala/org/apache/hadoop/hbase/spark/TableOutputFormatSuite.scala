@@ -25,7 +25,9 @@ import org.apache.hadoop.hbase.util.Bytes
 import org.apache.hadoop.mapreduce.{Job, TaskAttemptID, TaskType}
 import org.apache.hadoop.mapreduce.task.TaskAttemptContextImpl
 import org.apache.spark.{SparkConf, SparkContext}
-import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach, FunSuite}
+import org.scalatest.BeforeAndAfterAll
+import org.scalatest.BeforeAndAfterEach
+import org.scalatest.funsuite.AnyFunSuite
 import scala.util.{Failure, Success, Try}
 
 // Unit tests for HBASE-20521: change get configuration(TableOutputFormat.conf) object first sequence from jobContext to getConf
@@ -34,7 +36,7 @@ import scala.util.{Failure, Success, Try}
 // The other one(getConf return conf object) we manually call "setConf" to init TableOutputFormat.conf, for making it more straight forward, we specify a nonexistent table
 // name in conf object, checkOutputSpecs will then throw TableNotFoundException exception
 class TableOutputFormatSuite
-    extends FunSuite
+    extends AnyFunSuite
     with BeforeAndAfterEach
     with BeforeAndAfterAll
     with Logging {

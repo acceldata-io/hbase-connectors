@@ -22,10 +22,12 @@ import org.apache.hadoop.hbase.client._
 import org.apache.hadoop.hbase.filter.FirstKeyOnlyFilter
 import org.apache.hadoop.hbase.util.Bytes
 import org.apache.spark.{SparkContext, SparkException}
-import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach, FunSuite}
+import org.scalatest.BeforeAndAfterAll
+import org.scalatest.BeforeAndAfterEach
+import org.scalatest.funsuite.AnyFunSuite
 
 class HBaseContextSuite
-    extends FunSuite
+    extends AnyFunSuite
     with BeforeAndAfterEach
     with BeforeAndAfterAll
     with Logging {
@@ -70,7 +72,7 @@ class HBaseContextSuite
   test("bulkput to test HBase client") {
     val config = TEST_UTIL.getConfiguration
     val rdd = sc.parallelize(
-      Array(
+      Seq(
         (
           Bytes.toBytes("1"),
           Array((Bytes.toBytes(columnFamily), Bytes.toBytes("a"), Bytes.toBytes("foo1")))),
@@ -157,7 +159,7 @@ class HBaseContextSuite
       put.addColumn(Bytes.toBytes(columnFamily), Bytes.toBytes("a"), Bytes.toBytes("foo3"))
       table.put(put)
 
-      val rdd = sc.parallelize(Array(Bytes.toBytes("delete1"), Bytes.toBytes("delete3")))
+      val rdd = sc.parallelize(Seq(Bytes.toBytes("delete1"), Bytes.toBytes("delete3")))
 
       hbaseContext.bulkDelete[Array[Byte]](
         rdd,
@@ -206,7 +208,7 @@ class HBaseContextSuite
       connection.close()
     }
     val rdd = sc.parallelize(
-      Array(
+      Seq(
         Bytes.toBytes("get1"),
         Bytes.toBytes("get2"),
         Bytes.toBytes("get3"),
@@ -253,7 +255,7 @@ class HBaseContextSuite
     val config = TEST_UTIL.getConfiguration
 
     val rdd = sc.parallelize(
-      Array(
+      Seq(
         Bytes.toBytes("get1"),
         Bytes.toBytes("get2"),
         Bytes.toBytes("get3"),
@@ -306,7 +308,7 @@ class HBaseContextSuite
     }
 
     val rdd = sc.parallelize(
-      Array(
+      Seq(
         Bytes.toBytes("get1"),
         Bytes.toBytes("get2"),
         Bytes.toBytes("get3"),

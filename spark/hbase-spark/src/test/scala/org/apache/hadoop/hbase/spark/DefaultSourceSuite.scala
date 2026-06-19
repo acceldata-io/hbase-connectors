@@ -25,9 +25,11 @@ import org.apache.hadoop.hbase.client.{ConnectionFactory, Put}
 import org.apache.hadoop.hbase.spark.datasources.{HBaseSparkConf, HBaseTableCatalog}
 import org.apache.hadoop.hbase.util.Bytes
 import org.apache.spark.{SparkConf, SparkContext}
-import org.apache.spark.sql.{DataFrame, SQLContext}
+import org.apache.spark.sql.{DataFrame, SparkSession, SQLContext}
 import org.apache.spark.sql.functions._
-import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach, FunSuite}
+import org.scalatest.BeforeAndAfterAll
+import org.scalatest.BeforeAndAfterEach
+import org.scalatest.funsuite.AnyFunSuite
 import org.xml.sax.SAXParseException
 
 case class HBaseRecord(
@@ -83,7 +85,7 @@ object AvroHBaseKeyRecord {
 }
 
 class DefaultSourceSuite
-    extends FunSuite
+    extends AnyFunSuite
     with BeforeAndAfterEach
     with BeforeAndAfterAll
     with Logging {
@@ -137,7 +139,13 @@ class DefaultSourceSuite
     sparkConf.set(HBaseSparkConf.QUERY_BATCHSIZE, "100")
     sparkConf.set(HBaseSparkConf.QUERY_CACHEDROWS, "100")
 
-    sc = new SparkContext("local", "test", sparkConf)
+    val spark = SparkSession.builder()
+      .master("local")
+      .appName("test")
+      .config(sparkConf)
+      .getOrCreate()
+    sc = spark.sparkContext
+    sqlContext = spark.sqlContext
 
     val connection = ConnectionFactory.createConnection(TEST_UTIL.getConfiguration)
     try {
@@ -256,7 +264,6 @@ class DefaultSourceSuite
           |}""".stripMargin
 
     new HBaseContext(sc, TEST_UTIL.getConfiguration)
-    sqlContext = new SQLContext(sc)
 
     df = sqlContext.load(
       "org.apache.hadoop.hbase.spark",
@@ -379,13 +386,13 @@ class DefaultSourceSuite
     assert(executionRules.rowKeyFilter.points.size == 0)
     assert(executionRules.rowKeyFilter.ranges.size == 2)
 
-    val scanRange1 = executionRules.rowKeyFilter.ranges.get(0).get
+    val scanRange1 = executionRules.rowKeyFilter.ranges(0)
     assert(Bytes.equals(scanRange1.lowerBound, Bytes.toBytes("")))
     assert(Bytes.equals(scanRange1.upperBound, Bytes.toBytes("get2")))
     assert(scanRange1.isLowerBoundEqualTo)
     assert(!scanRange1.isUpperBoundEqualTo)
 
-    val scanRange2 = executionRules.rowKeyFilter.ranges.get(1).get
+    val scanRange2 = executionRules.rowKeyFilter.ranges(1)
     assert(Bytes.equals(scanRange2.lowerBound, Bytes.toBytes("get3")))
     assert(scanRange2.upperBound == null)
     assert(!scanRange2.isLowerBoundEqualTo)
@@ -441,12 +448,12 @@ class DefaultSourceSuite
 
     assert(executionRules.rowKeyFilter.ranges.size == 3)
 
-    val scanRange1 = executionRules.rowKeyFilter.ranges.get(0).get
+    val scanRange1 = executionRules.rowKeyFilter.ranges(0)
     assert(Bytes.equals(scanRange1.upperBound, Bytes.toBytes(2)))
     assert(scanRange1.isLowerBoundEqualTo)
     assert(!scanRange1.isUpperBoundEqualTo)
 
-    val scanRange2 = executionRules.rowKeyFilter.ranges.get(1).get
+    val scanRange2 = executionRules.rowKeyFilter.ranges(1)
     assert(scanRange2.isUpperBoundEqualTo)
 
     assert(results.length == 2)
@@ -474,7 +481,7 @@ class DefaultSourceSuite
     assert(executionRules.rowKeyFilter.points.size == 0)
     assert(executionRules.rowKeyFilter.ranges.size == 1)
 
-    val scanRange1 = executionRules.rowKeyFilter.ranges.get(0).get
+    val scanRange1 = executionRules.rowKeyFilter.ranges(0)
     assert(Bytes.equals(scanRange1.lowerBound, Bytes.toBytes("get2")))
     assert(Bytes.equals(scanRange1.upperBound, Bytes.toBytes("get3")))
     assert(scanRange1.isLowerBoundEqualTo)
@@ -519,7 +526,7 @@ class DefaultSourceSuite
     assert(executionRules.rowKeyFilter.points.size == 1)
     assert(executionRules.rowKeyFilter.ranges.size == 1)
 
-    val scanRange1 = executionRules.rowKeyFilter.ranges.get(0).get
+    val scanRange1 = executionRules.rowKeyFilter.ranges(0)
     assert(Bytes.equals(scanRange1.lowerBound, Bytes.toBytes("get3")))
     assert(scanRange1.upperBound == null)
     assert(scanRange1.isLowerBoundEqualTo)
@@ -551,13 +558,13 @@ class DefaultSourceSuite
     assert(executionRules.rowKeyFilter.points.size == 0)
     assert(executionRules.rowKeyFilter.ranges.size == 2)
 
-    val scanRange1 = executionRules.rowKeyFilter.ranges.get(0).get
+    val scanRange1 = executionRules.rowKeyFilter.ranges(0)
     assert(Bytes.equals(scanRange1.lowerBound, Bytes.toBytes(1)))
     assert(Bytes.equals(scanRange1.upperBound, Bytes.toBytes(2)))
     assert(scanRange1.isLowerBoundEqualTo)
     assert(scanRange1.isUpperBoundEqualTo)
 
-    val scanRange2 = executionRules.rowKeyFilter.ranges.get(1).get
+    val scanRange2 = executionRules.rowKeyFilter.ranges(1)
     assert(Bytes.equals(scanRange2.lowerBound, Bytes.toBytes(3)))
     assert(Bytes.equals(scanRange2.upperBound, Bytes.toBytes(5)))
     assert(!scanRange2.isLowerBoundEqualTo)
@@ -589,13 +596,13 @@ class DefaultSourceSuite
     assert(executionRules.rowKeyFilter.points.size == 0)
     assert(executionRules.rowKeyFilter.ranges.size == 2)
 
-    val scanRange1 = executionRules.rowKeyFilter.ranges.get(0).get
+    val scanRange1 = executionRules.rowKeyFilter.ranges(0)
     assert(Bytes.equals(scanRange1.lowerBound, Bytes.toBytes("get1")))
     assert(Bytes.equals(scanRange1.upperBound, Bytes.toBytes("get2")))
     assert(scanRange1.isLowerBoundEqualTo)
     assert(scanRange1.isUpperBoundEqualTo)
 
-    val scanRange2 = executionRules.rowKeyFilter.ranges.get(1).get
+    val scanRange2 = executionRules.rowKeyFilter.ranges(1)
     assert(Bytes.equals(scanRange2.lowerBound, Bytes.toBytes("get3")))
     assert(Bytes.equals(scanRange2.upperBound, Bytes.toBytes("get5")))
     assert(!scanRange2.isLowerBoundEqualTo)
@@ -624,7 +631,7 @@ class DefaultSourceSuite
     assert(executionRules.rowKeyFilter.points.size == 0)
     assert(executionRules.rowKeyFilter.ranges.size == 1)
 
-    val scanRange1 = executionRules.rowKeyFilter.ranges.get(0).get
+    val scanRange1 = executionRules.rowKeyFilter.ranges(0)
     // This is the main test for 14406
     // Because the key is joined through a or with a qualifier
     // There is no filter on the rowKey
@@ -655,7 +662,7 @@ class DefaultSourceSuite
     assert(executionRules.rowKeyFilter.points.size == 0)
     assert(executionRules.rowKeyFilter.ranges.size == 1)
 
-    val scanRange1 = executionRules.rowKeyFilter.ranges.get(0).get
+    val scanRange1 = executionRules.rowKeyFilter.ranges(0)
     assert(Bytes.equals(scanRange1.lowerBound, Bytes.toBytes("")))
     assert(scanRange1.upperBound == null)
     assert(scanRange1.isLowerBoundEqualTo)
@@ -682,7 +689,7 @@ class DefaultSourceSuite
     assert(executionRules.rowKeyFilter.points.size == 0)
     assert(executionRules.rowKeyFilter.ranges.size == 1)
 
-    val scanRange1 = executionRules.rowKeyFilter.ranges.get(0).get
+    val scanRange1 = executionRules.rowKeyFilter.ranges(0)
     assert(Bytes.equals(scanRange1.lowerBound, Bytes.toBytes("")))
     assert(scanRange1.upperBound == null)
     assert(scanRange1.isLowerBoundEqualTo)
@@ -706,7 +713,7 @@ class DefaultSourceSuite
     assert(executionRules.rowKeyFilter.points.size == 0)
     assert(executionRules.rowKeyFilter.ranges.size == 1)
 
-    val scanRange1 = executionRules.rowKeyFilter.ranges.get(0).get
+    val scanRange1 = executionRules.rowKeyFilter.ranges(0)
     assert(Bytes.equals(scanRange1.lowerBound, Bytes.toBytes("get1")))
     assert(Bytes.equals(scanRange1.upperBound, Bytes.toBytes("get3")))
     assert(scanRange1.isLowerBoundEqualTo)

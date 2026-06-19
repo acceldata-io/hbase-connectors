@@ -120,12 +120,12 @@
   </issueManagement>
   <properties>
     <!-- See https://maven.apache.org/maven-ci-friendly.html -->
-    <revision>1.1.0-SNAPSHOT</revision>
+    <revision>1.1.0.3.3.6.5-SNAPSHOT</revision>
     <maven.javadoc.skip>true</maven.javadoc.skip>
     <maven.build.timestamp.format>yyyy-MM-dd'T'HH:mm</maven.build.timestamp.format>
     <buildDate>${maven.build.timestamp}</buildDate>
     <compileSource>1.8</compileSource>
-    <releaseTarget>8</releaseTarget>
+    <releaseTarget>17</releaseTarget>
     <java.min.version>${compileSource}</java.min.version>
     <!-- override on command line to have generated LICENSE files include
          diagnostic info for verifying notice requirements -->
@@ -137,18 +137,20 @@
     <buildnumber.maven.version>1.4</buildnumber.maven.version>
 
     <maven.min.version>3.5.0</maven.min.version>
-    <hbase-hadoop2.version>2.6.2</hbase-hadoop2.version>
-    <hbase.version>2.6.2-hadoop3</hbase.version>
+    <hbase-hadoop2.version>2.6.2.3.3.6.5-SNAPSHOT</hbase-hadoop2.version>
+    <hbase.version>2.6.2.3.3.6.5-SNAPSHOT</hbase.version>
     <exec.maven.version>1.6.0</exec.maven.version>
     <audience-annotations.version>0.5.0</audience-annotations.version>
     <junit.version>4.13.2</junit.version>
     <mockito.version>4.11.0</mockito.version>
-    <hbase-thirdparty.version>4.1.10</hbase-thirdparty.version>
+    <hbase-thirdparty.version>4.1.11</hbase-thirdparty.version>
     <!-- Must match the version in hbase-thirdparty above ! -->
-    <thirdparty.protobuf.version>4.29.2</thirdparty.protobuf.version>
+    <thirdparty.protobuf.version>4.30.2</thirdparty.protobuf.version>
+    <protobuf.version>4.30.2</protobuf.version>
     <hadoop-two.version>2.10.0</hadoop-two.version>
-    <hadoop-three.version>3.4.1</hadoop-three.version>
+    <hadoop-three.version>3.3.6.3.3.6.5-SNAPSHOT</hadoop-three.version>
     <hadoop.version>${hadoop-three.version}</hadoop.version>
+    <zookeeper.version>3.8.4.3.3.6.5-SNAPSHOT</zookeeper.version>
     <slf4j.version>1.7.36</slf4j.version>
     <log4j2.version>2.25.3</log4j2.version>
     <reload4j.version>1.2.25</reload4j.version>
@@ -212,8 +214,26 @@
       --add-opens=java.base/sun.util.calendar=ALL-UNNAMED
       -Djdk.reflect.useDirectMethodHandle=false
       -Dio.netty.tryReflectionSetAccessible=true</spark-surefire.jdk11.flags>
-    <spark-surefire.jdk17.flags/>
+    <!-- Additional JDK 17+ flags for Spark 4.x compatibility -->
+    <spark-surefire.jdk17.flags>--add-opens=java.base/java.nio=ALL-UNNAMED
+      --add-opens=java.base/java.lang.reflect=ALL-UNNAMED
+      --add-opens=java.base/java.util=ALL-UNNAMED
+      --add-opens=java.base/java.text=ALL-UNNAMED
+      --add-opens=java.base/java.time=ALL-UNNAMED
+      --add-opens=java.base/sun.nio.ch=ALL-UNNAMED</spark-surefire.jdk17.flags>
   </properties>
+  <distributionManagement>
+    <repository>
+      <id>nexus-releases</id>
+      <name>Releases</name>
+      <url>https://repo1.acceldata.dev/repository/odp-staging-release/</url>
+    </repository>
+    <snapshotRepository>
+      <id>nexus-snapshots</id>
+      <name>Snapshot</name>
+      <url>https://repo1.acceldata.dev/repository/odp-staging-snapshot/</url>
+    </snapshotRepository>
+  </distributionManagement>
   <dependencyManagement>
     <dependencies>
       <dependency>
@@ -396,6 +416,67 @@
         <version>${hbase.version}</version>
         <scope>test</scope>
       </dependency>
+      <dependency>
+        <groupId>com.google.protobuf</groupId>
+        <artifactId>protobuf-java</artifactId>
+        <version>${protobuf.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.hadoop</groupId>
+        <artifactId>hadoop-common</artifactId>
+        <version>${hadoop.version}</version>
+        <exclusions>
+          <exclusion>
+            <groupId>com.google.protobuf</groupId>
+            <artifactId>protobuf-java</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.hadoop</groupId>
+        <artifactId>hadoop-common</artifactId>
+        <version>${hadoop.version}</version>
+        <type>test-jar</type>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.hadoop</groupId>
+        <artifactId>hadoop-client</artifactId>
+        <version>${hadoop.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.hadoop</groupId>
+        <artifactId>hadoop-hdfs</artifactId>
+        <version>${hadoop.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.hadoop</groupId>
+        <artifactId>hadoop-hdfs</artifactId>
+        <version>${hadoop.version}</version>
+        <type>test-jar</type>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.hadoop</groupId>
+        <artifactId>hadoop-mapreduce-client-core</artifactId>
+        <version>${hadoop.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.hadoop</groupId>
+        <artifactId>hadoop-minikdc</artifactId>
+        <version>${hadoop.version}</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.zookeeper</groupId>
+        <artifactId>zookeeper</artifactId>
+        <version>${zookeeper.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.zookeeper</groupId>
+        <artifactId>zookeeper-jute</artifactId>
+        <version>${zookeeper.version}</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
   <build>
@@ -493,7 +574,7 @@
             <configLocation>hbase/checkstyle.xml</configLocation>
             <suppressionsLocation>hbase/checkstyle-suppressions.xml</suppressionsLocation>
             <includeTestSourceDirectory>true</includeTestSourceDirectory>
-            <failOnViolation>false</failOnViolation>
+            <failOnViolation>true</failOnViolation>
           </configuration>
           <dependencies>
             <dependency>
@@ -549,17 +630,17 @@
                 <requireMavenVersion>
                   <version>[${maven.min.version},)</version>
                   <message>Maven is out of date.
-  HBase requires at least version ${maven.min.version} of Maven to properly build from source.
-  You appear to be using an older version. You can use either "mvn -version" or
-  "mvn enforcer:display-info" to verify what version is active.
-  See the reference guide on building for more information: http://hbase.apache.org/book.html#build</message>
+                    HBase requires at least version ${maven.min.version} of Maven to properly build from source.
+                    You appear to be using an older version. You can use either "mvn -version" or
+                    "mvn enforcer:display-info" to verify what version is active.
+                    See the reference guide on building for more information: http://hbase.apache.org/book.html#build</message>
                 </requireMavenVersion>
                 <!-- The earliest JVM version we verify builds for via ASF Jenkins -->
                 <requireJavaVersion>
                   <version>[${java.min.version},)</version>
                   <message>Java is out of date.
-  HBase requires at least version ${java.min.version} of the JDK to properly build from source.
-  See the reference guide on building for more information: http://hbase.apache.org/book.html#build</message>
+                    HBase requires at least version ${java.min.version} of the JDK to properly build from source.
+                    See the reference guide on building for more information: http://hbase.apache.org/book.html#build</message>
                 </requireJavaVersion>
                 <bannedDependencies>
                   <excludes>
@@ -873,11 +954,11 @@
                 <enforceBytecodeVersion>
                   <maxJdkVersion>${compileSource}</maxJdkVersion>
                   <message>HBase has unsupported dependencies.
-  HBase requires that all dependencies be compiled with version ${compileSource} or earlier
-  of the JDK to properly build from source.  You appear to be using a newer dependency. You can use
-  either "mvn -version" or "mvn enforcer:display-info" to verify what version is active.
-  Non-release builds can temporarily build with a newer JDK version by setting the
-  'compileSource' property (eg. mvn -DcompileSource=1.8 clean package).</message>
+                    HBase requires that all dependencies be compiled with version ${compileSource} or earlier
+                    of the JDK to properly build from source.  You appear to be using a newer dependency. You can use
+                    either "mvn -version" or "mvn enforcer:display-info" to verify what version is active.
+                    Non-release builds can temporarily build with a newer JDK version by setting the
+                    'compileSource' property (eg. mvn -DcompileSource=1.8 clean package).</message>
                 </enforceBytecodeVersion>
               </rules>
             </configuration>

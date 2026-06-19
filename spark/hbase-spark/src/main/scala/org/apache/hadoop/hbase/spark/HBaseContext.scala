@@ -508,7 +508,7 @@ class HBaseContext(
   /**
    *  underlining wrapper all get mapPartition functions in HBaseContext
    */
-  private class GetMapPartition[T, U](
+  private class GetMapPartition[T, U: scala.reflect.ClassTag](
       tableName: TableName,
       batchSize: Integer,
       makeGet: (T) => Get,

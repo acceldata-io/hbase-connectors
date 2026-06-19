@@ -27,6 +27,7 @@ import org.apache.spark.{Partition, SparkEnv, TaskContext}
 import org.apache.spark.rdd.RDD
 import org.apache.yetus.audience.InterfaceAudience
 import scala.collection.mutable
+import scala.collection.parallel.CollectionConverters._
 
 @InterfaceAudience.Private
 class HBaseTableScanRDD(

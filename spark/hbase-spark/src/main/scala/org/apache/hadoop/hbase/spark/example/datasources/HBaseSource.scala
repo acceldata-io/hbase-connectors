@@ -18,10 +18,7 @@
 package org.apache.hadoop.hbase.spark.example.datasources
 
 import org.apache.hadoop.hbase.spark.datasources.HBaseTableCatalog
-import org.apache.spark.SparkConf
-import org.apache.spark.SparkContext
-import org.apache.spark.sql.DataFrame
-import org.apache.spark.sql.SQLContext
+import org.apache.spark.sql.{DataFrame, SparkSession}
 import org.apache.yetus.audience.InterfaceAudience
 
 @InterfaceAudience.Private
@@ -71,15 +68,13 @@ object HBaseSource {
                 |}
                 |}""".stripMargin
 
-  def main(args: Array[String]) {
-    val sparkConf = new SparkConf().setAppName("HBaseSourceExample")
-    val sc = new SparkContext(sparkConf)
-    val sqlContext = new SQLContext(sc)
+  def main(args: Array[String]): Unit = {
+    val spark = SparkSession.builder().appName("HBaseSourceExample").getOrCreate()
 
-    import sqlContext.implicits._
+    import spark.implicits._
 
     def withCatalog(cat: String): DataFrame = {
-      sqlContext.read
+      spark.read
         .options(Map(HBaseTableCatalog.tableCatalog -> cat))
         .format("org.apache.hadoop.hbase.spark")
         .load()
@@ -87,8 +82,9 @@ object HBaseSource {
 
     val data = (0 to 255).map { i => HBaseRecord(i) }
 
-    sc.parallelize(data)
-      .toDF
+    spark.sparkContext
+      .parallelize(data)
+      .toDF()
       .write
       .options(Map(HBaseTableCatalog.tableCatalog -> cat, HBaseTableCatalog.newTable -> "5"))
       .format("org.apache.hadoop.hbase.spark")
@@ -98,15 +94,17 @@ object HBaseSource {
     df.show()
     df.filter($"col0" <= "row005")
       .select($"col0", $"col1")
-      .show
+      .show()
     df.filter($"col0" === "row005" || $"col0" <= "row005")
       .select($"col0", $"col1")
-      .show
+      .show()
     df.filter($"col0" > "row250")
       .select($"col0", $"col1")
-      .show
-    df.registerTempTable("table1")
-    val c = sqlContext.sql("select count(col1) from table1 where col0 < 'row050'")
+      .show()
+    df.createOrReplaceTempView("table1")
+    val c = spark.sql("select count(col1) from table1 where col0 < 'row050'")
     c.show()
+
+    spark.stop()
   }
 }

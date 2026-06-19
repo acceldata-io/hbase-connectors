@@ -19,9 +19,11 @@ package org.apache.hadoop.hbase.spark
 
 import org.apache.hadoop.hbase.spark.datasources.Utils
 import org.apache.hadoop.hbase.util.Bytes
-import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach, FunSuite}
+import org.scalatest.BeforeAndAfterAll
+import org.scalatest.BeforeAndAfterEach
+import org.scalatest.funsuite.AnyFunSuite
 
-class StartsWithSuite extends FunSuite with BeforeAndAfterEach with BeforeAndAfterAll with Logging {
+class StartsWithSuite extends AnyFunSuite with BeforeAndAfterEach with BeforeAndAfterAll with Logging {
 
   test("simple1") {
     val t = new Array[Byte](2)

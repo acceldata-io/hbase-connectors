@@ -111,7 +111,7 @@ object Ranges {
         } else {
           None
         }
-    }.seq
+    }
   }
 }
 

@@ -18,10 +18,7 @@
 package org.apache.hadoop.hbase.spark.example.datasources
 
 import org.apache.hadoop.hbase.spark.datasources.HBaseTableCatalog
-import org.apache.spark.SparkConf
-import org.apache.spark.SparkContext
-import org.apache.spark.sql.DataFrame
-import org.apache.spark.sql.SQLContext
+import org.apache.spark.sql.{DataFrame, SparkSession}
 import org.apache.yetus.audience.InterfaceAudience
 
 @InterfaceAudience.Private
@@ -81,15 +78,13 @@ object DataType {
                 |}
                 |}""".stripMargin
 
-  def main(args: Array[String]) {
-    val sparkConf = new SparkConf().setAppName("DataTypeExample")
-    val sc = new SparkContext(sparkConf)
-    val sqlContext = new SQLContext(sc)
+  def main(args: Array[String]): Unit = {
+    val spark = SparkSession.builder().appName("DataTypeExample").getOrCreate()
 
-    import sqlContext.implicits._
+    import spark.implicits._
 
     def withCatalog(cat: String): DataFrame = {
-      sqlContext.read
+      spark.read
         .options(Map(HBaseTableCatalog.tableCatalog -> cat))
         .format("org.apache.hadoop.hbase.spark")
         .load()
@@ -97,8 +92,9 @@ object DataType {
 
     // test populate table
     val data = (0 until 32).map { i => IntKeyRecord(i) }
-    sc.parallelize(data)
-      .toDF
+    spark.sparkContext
+      .parallelize(data)
+      .toDF()
       .write
       .options(Map(HBaseTableCatalog.tableCatalog -> cat, HBaseTableCatalog.newTable -> "5"))
       .format("org.apache.hadoop.hbase.spark")
