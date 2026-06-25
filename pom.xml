@@ -229,6 +229,11 @@
   <dependencyManagement>
     <dependencies>
       <dependency>
+        <groupId>org.apache.hbase.thirdparty</groupId>
+        <artifactId>hbase-shaded-netty</artifactId>
+        <version>4.1.13</version>
+      </dependency>
+      <dependency>
         <groupId>org.apache.commons</groupId>
         <artifactId>commons-lang3</artifactId>
         <version>${commons-lang3.version}</version>
