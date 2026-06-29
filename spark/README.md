@@ -54,7 +54,7 @@ $ mvn -Pspark-4 clean install
 You can also override specific versions with the spark-4 profile:
 
 ```
-$ mvn -Pspark-4 -Dspark.version=4.1.1.3.3.6.4-1 -Dhadoop-three.version=3.3.6.3.3.6.4-1 -Dhbase.version=2.6.2.3.3.6.4-1 clean install
+$ mvn -Pspark-4 -Dspark.version=4.1.1.3.3.6.4-1000 -Dhadoop-three.version=3.3.6.3.3.6.4-1000 -Dhbase.version=2.6.2.3.3.6.4-1000 clean install
 ```
 
 ## Configuration and Installation
