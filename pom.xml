@@ -228,6 +228,12 @@
   </distributionManagement>
   <dependencyManagement>
     <dependencies>
+      <!-- CVE-2022-40152: pin woodstox-core to 5.4.0 (hadoop-2 pulls vulnerable 5.x transitively) -->
+      <dependency>
+        <groupId>com.fasterxml.woodstox</groupId>
+        <artifactId>woodstox-core</artifactId>
+        <version>5.4.0</version>
+      </dependency>
       <dependency>
         <groupId>org.apache.hbase.thirdparty</groupId>
         <artifactId>hbase-shaded-netty</artifactId>
