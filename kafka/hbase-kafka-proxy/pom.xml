@@ -131,6 +131,10 @@
            <groupId>org.codehaus.jettison</groupId>
            <artifactId>jettison</artifactId>
         </exclusion>
+        <exclusion>
+           <groupId>com.jamesmurty.utils</groupId>
+           <artifactId>java-xmlbuilder</artifactId>
+        </exclusion>
       </exclusions>
     </dependency>
     <dependency>
