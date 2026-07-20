@@ -143,7 +143,7 @@
     <audience-annotations.version>0.5.0</audience-annotations.version>
     <junit.version>4.13.2</junit.version>
     <mockito.version>4.11.0</mockito.version>
-    <hbase-thirdparty.version>4.1.11</hbase-thirdparty.version>
+    <hbase-thirdparty.version>4.1.13</hbase-thirdparty.version>
     <!-- Must match the version in hbase-thirdparty above ! -->
     <thirdparty.protobuf.version>4.30.2</thirdparty.protobuf.version>
     <protobuf.version>4.30.2</protobuf.version>
@@ -165,7 +165,7 @@
     <protobuf.plugin.version>0.5.0</protobuf.plugin.version>
     <commons-io.version>2.18.0</commons-io.version>
     <avro.version>1.11.4</avro.version>
-    <commons-lang3.version>3.17.0</commons-lang3.version>
+    <commons-lang3.version>3.18.0</commons-lang3.version>
     <os.maven.version>1.6.1</os.maven.version>
     <glassfish.el.version>3.0.1-b08</glassfish.el.version>
     <compat.module>hbase-hadoop2-compat</compat.module>
